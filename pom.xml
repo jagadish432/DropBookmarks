@@ -22,6 +22,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>0.8.2</dropwizard.version>
         <mainClass>com.udemy.DropBookmarksApplication</mainClass>
+        <javadocExecutable>/Library/Java/JavaVirtualMachines/jdk1.8.0_333.jdk/Contents/Home/bin/javadoc</javadocExecutable>
     </properties>
 
     <dependencies>
@@ -29,6 +30,12 @@
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
             <version>${dropwizard.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-testing</artifactId>
+            <version>${dropwizard.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
