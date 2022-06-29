@@ -9,15 +9,13 @@ import io.dropwizard.auth.basic.BasicAuthFactory;
 import io.dropwizard.auth.basic.BasicCredentials;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.glassfish.jersey.test.JerseyTest;
-//import org.junit.jupiter.api.*;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.glassfish.jersey.test.grizzly.GrizzlyWebTestContainerFactory;
 
 import javax.ws.rs.core.MediaType;
 
-//import static org.junit.jupiter.api.Assertions.*;
 
 public class HelloResourceTest {
     private static final Authenticator<BasicCredentials, User> AUTHENTICATOR = new Authenticator<BasicCredentials, User>() {
@@ -37,7 +35,10 @@ public class HelloResourceTest {
                             User.class
                     )
             )
-    ).addResource(new HelloResource()).build();
+    ).setTestContainerFactory(
+            new GrizzlyWebTestContainerFactory()
+            )
+    .addResource(new HelloResource()).build();
 
     @Test
     public void getGreeting() {
