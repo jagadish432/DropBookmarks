@@ -1,6 +1,8 @@
+import ch.qos.logback.core.net.ssl.SSLConfiguration;
 import com.udemy.DropBookmarksApplication;
 import com.udemy.DropBookmarksConfiguration;
 import io.dropwizard.testing.junit.DropwizardAppRule;
+import org.glassfish.jersey.SslConfigurator;
 import org.glassfish.jersey.client.JerseyClient;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.After;
@@ -8,6 +10,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import javax.net.ssl.SSLContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
@@ -27,11 +30,19 @@ public class AuthIntegrationTest {
     private static final String PATH = "/hello/secured";
     private Client client;
 
+    private final static String TRUST_STORE_FILE_NAME = "dropbookmarks.keystore";
+    private final static String TRUST_STORE_PASSWORD = "p@ssw0rd";
+
     private static final HttpAuthenticationFeature FEATURE = HttpAuthenticationFeature.basic("user", "p@ssw0rd");
 
     @Before
     public void setUp(){
-        client = ClientBuilder.newClient();
+        SslConfigurator configurator = SslConfigurator.newInstance();
+        configurator.trustStoreFile(TRUST_STORE_FILE_NAME).trustStorePassword(TRUST_STORE_PASSWORD);
+
+        SSLContext sslContext = configurator.createSSLContext();
+
+        client = ClientBuilder.newBuilder().sslContext(sslContext).build();
     }
 
     @After
