@@ -22,7 +22,8 @@ public class AuthIntegrationTest {
             CONFIG_PATH
     );
 
-    private static final String TARGET = "http://localhost:8080";
+//    private static final String TARGET = "http://localhost:8080";
+    private static final String TARGET = "https://localhost:8443";
     private static final String PATH = "/hello/secured";
     private Client client;
 
