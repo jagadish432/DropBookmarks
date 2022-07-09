@@ -14,7 +14,46 @@
             <column name="username" type="varchar(155)">
                 <constraints nullable="false"/>
             </column>
+            <column name="password" type="varchar(155)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <comment>A script to create Users table</comment>
+    </changeSet>
+
+    <changeSet id="2" author = "jagadish" >
+        <createTable tableName="bookmarks">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"></constraints>
+            </column>
+            <column name="name" type="varchar(155)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="url" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(2048)"/>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_users_id" referencedTableName="Users"
+                referencedColumnNames="id"/>
+            </column>
+        </createTable>
+        <comment>A script to create bookmarks table</comment>
+    </changeSet>
+
+    <changeSet id="3" author = "jagadish" >
+        <insert tableName="users">
+            <column name="id" value="1"/>
+            <column name="username" value="udemy"/>
+            <column name="password" value="password"/>
+        </insert>
+        <rollback>
+            <delete tableName="Users">
+                <where>
+                    id="1"
+                </where>
+            </delete>
+        </rollback>
+        <comment>A script to insert data into Users table</comment>
     </changeSet>
 </databaseChangeLog>

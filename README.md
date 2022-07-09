@@ -10,6 +10,8 @@ keytool -genkeypair -keyalg RSA -dname "CN=localhost" -keystore dropbookmarks.ke
 
 ## For adding new dependencies
 
+### via CLI:
+
 . Add required dependencies in the pom.xml file
 
 . Then, run mvn clean install
@@ -17,6 +19,15 @@ keytool -genkeypair -keyalg RSA -dname "CN=localhost" -keystore dropbookmarks.ke
 . Once the build is successful from the above command, then try to access the library/package specific function,variable,class, etc.. if IDE shows it then good , 
 otherwise place the cursor on it and do opt+enter to search in maven dependency and add it. Also, tru the "reload from disk and rebuild the project", sometimes it also works fine.
 
+### via IntelliJ IDE:
+
+. Add required dependencies in the pom.xml file
+
+. Then, rebuild the project
+
+. If not worked, then open maven window in intelliJ -> View > Tool Windows > Maven
+
+. Then, click on resync ("reload all maven projects") icon
 
 ## For creating database
 
@@ -38,5 +49,22 @@ show databases;
 
 . Make sure we have our database created in our local database.
 
-. Run ```mvn liquibase:update``` to execute the liquibase migration scripts.
+. RUN the below commands accordingly:
+
+. ```mvn liquibase:update``` -> to execute the liquibase migration scripts.
+
+. ```mvn liquibase:dropAll``` -> to clear the database i.e., reset.
+
+. ```mvn liquibase:updateSQL -Dliquibase.contexts=DEV``` -> to generate SQL commands from changeSets.
+
+. ```cat target/liquibase/migrate.sql``` -> to view the generated SQL script.
+
+. ```mvn liquibase:rollbackSQL -Dliquibase.rollbackCount=<no. of changesets to rollback i.e., 1/2/3/etc..>``` -> to generate SQL script for the rollback commands mentioned in our changeSets.
+
+. ```mvn liquibase:rollback -Dliquibase.rollbackCount=<no. of changesets to rollback i.e., 1/2/3/etc..>```  -> to rollback on the database.
+
+. ```mvn liquibase:generateChangeLog``` -> to generate the xml formatted changeSets from the database and create a new output xml file using that generated content. Ensure we have the "<outputChangeLogFile>" property in pom.xml under the plugins> liquibase' plugin > configuration.
+
+
+
 
