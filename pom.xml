@@ -50,7 +50,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.29</version>
+            <version>8.0.22</version>
         </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
@@ -190,7 +190,7 @@
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
-                <version>4.11.0</version>
+                <version>4.3.1</version>
                 <configuration>
                     <changeLogFile>migrations.xml</changeLogFile>
                     <driver>com.mysql.jdbc.Driver</driver>

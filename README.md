@@ -41,7 +41,7 @@ show databases;
 ```
 
 . Add a database connection from Intellij using database URL, creds mentioned on pom.xml and config.yml and verify the connection, like the below image.
-![img.png](img.png)
+![img.png](info_images/img.png)
 
 
 ## execute liquibase migration scripts
@@ -51,11 +51,11 @@ show databases;
 
 . RUN the below commands accordingly:
 
-. ```mvn liquibase:update``` -> to execute the liquibase migration scripts.
-
 . ```mvn liquibase:dropAll``` -> to clear the database i.e., reset.
 
 . ```mvn liquibase:updateSQL -Dliquibase.contexts=DEV``` -> to generate SQL commands from changeSets.
+
+. ```mvn liquibase:update``` -> to execute the liquibase migration scripts.
 
 . ```cat target/liquibase/migrate.sql``` -> to view the generated SQL script.
 
@@ -64,6 +64,16 @@ show databases;
 . ```mvn liquibase:rollback -Dliquibase.rollbackCount=<no. of changesets to rollback i.e., 1/2/3/etc..>```  -> to rollback on the database.
 
 . ```mvn liquibase:generateChangeLog``` -> to generate the xml formatted changeSets from the database and create a new output xml file using that generated content. Ensure we have the "<outputChangeLogFile>" property in pom.xml under the plugins> liquibase' plugin > configuration.
+
+
+## Database refractoring using CLI
+
+. Run ```java -jar target/DropBookmarks-1.0-SNAPSHOT.jar db status config.yml``` to check how many migrations(changeSets) are yet to apply to the database. Refer below pic.
+![img_1.png](info_images/img_1.png)
+
+
+. Run ```java -jar target/DropBookmarks-1.0-SNAPSHOT.jar db migrate -i DEV config.yml``` to execute the YET TO APPLY changeSets. Refer below pic.
+![img_2.png](info_images/img_2.png)
 
 
 
