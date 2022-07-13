@@ -66,7 +66,7 @@ show databases;
 . ```mvn liquibase:generateChangeLog``` -> to generate the xml formatted changeSets from the database and create a new output xml file using that generated content. Ensure we have the "<outputChangeLogFile>" property in pom.xml under the plugins> liquibase' plugin > configuration.
 
 
-## Database refractoring using CLI
+## Database refactoring using CLI
 
 . Run ```java -jar target/DropBookmarks-1.0-SNAPSHOT.jar db status config.yml``` to check how many migrations(changeSets) are yet to apply to the database. Refer below pic.
 ![img_1.png](info_images/img_1.png)
@@ -74,6 +74,13 @@ show databases;
 
 . Run ```java -jar target/DropBookmarks-1.0-SNAPSHOT.jar db migrate -i DEV config.yml``` to execute the YET TO APPLY changeSets. Refer below pic.
 ![img_2.png](info_images/img_2.png)
+
+. Other available commands for db: 
+    positional arguments:
+        {calculate-checksum,clear-checksums,drop-all,dump,fast-forward,generate-docs,locks,migrate,prepare-rollback,rollback,status,tag,test}
+
+
+
 
 
 

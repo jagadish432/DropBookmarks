@@ -35,7 +35,7 @@
             <column name="description" type="varchar(2048)"/>
             <column name="user_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_users_id" referencedTableName="Users"
-                referencedColumnNames="id"/>
+                             referencedColumnNames="id"/>
             </column>
         </createTable>
         <comment>A script to create bookmarks table</comment>
@@ -56,4 +56,58 @@
         </rollback>
         <comment>A script to insert data into Users table</comment>
     </changeSet>
+
+    <changeSet id="4" author = "jagadish" context="test">
+        <insert tableName="users">
+            <column name="id" value="2"/>
+            <column name="username" value="jagadish"/>
+            <column name="password" value="password"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" value="3"/>
+            <column name="username" value="dropwizard"/>
+            <column name="password" value="password"/>
+        </insert>
+        <rollback>
+            <delete tableName="Users">
+                <where>
+                    id in (2,3)
+                </where>
+            </delete>
+        </rollback>
+        <comment>A script to insert 2 and 3 data into Users table</comment>
+    </changeSet>
+
+    <changeSet id="5" author = "jagadish" context="test">
+        <insert tableName="bookmarks">
+            <column name="id" value="1"/>
+            <column name="name" value="google"/>
+            <column name="url" value="https://www.google.com"/>
+            <column name="description" value="google's URL"/>
+            <column name="user_id" value="1"/>
+        </insert>
+        <insert tableName="bookmarks">
+            <column name="id" value="2"/>
+            <column name="name" value="facebook"/>
+            <column name="url" value="https://www.facebook.com"/>
+            <column name="description" value="facebook's URL"/>
+            <column name="user_id" value="1"/>
+        </insert>
+        <insert tableName="bookmarks">
+            <column name="id" value="3"/>
+            <column name="name" value="oracle"/>
+            <column name="url" value="https://www.oracle.com"/>
+            <column name="description" value="Oracle's URL"/>
+            <column name="user_id" value="2"/>
+        </insert>
+        <rollback>
+            <delete tableName="bookmarks">
+                <where>
+                    id in (1,2,3)
+                </where>
+            </delete>
+        </rollback>
+        <comment>A script to insert data into bookmarks table</comment>
+    </changeSet>
+
 </databaseChangeLog>
