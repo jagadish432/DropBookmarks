@@ -30,6 +30,7 @@ public class User {
 
     private String password;
 
+    @ElementCollection
     private List<Bookmark> bookmarks = new ArrayList<>();
 
 

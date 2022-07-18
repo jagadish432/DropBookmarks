@@ -43,6 +43,10 @@ show databases;
 . Add a database connection from Intellij using database URL, creds mentioned on pom.xml and config.yml and verify the connection, like the below image.
 ![img.png](info_images/img.png)
 
+View Database from intelliJ IDE:
+
+View > Tool Windows > Database
+
 
 ## execute liquibase migration scripts
 . We need to make sure we have a liquibase migration scripts in allowed format by liquibase(i.e., in xml/sql/json/etc.. format) in our [src/main/resources](src/main/resources) folder.

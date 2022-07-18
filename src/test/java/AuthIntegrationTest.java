@@ -1,9 +1,7 @@
-import ch.qos.logback.core.net.ssl.SSLConfiguration;
 import com.udemy.DropBookmarksApplication;
 import com.udemy.DropBookmarksConfiguration;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.glassfish.jersey.SslConfigurator;
-import org.glassfish.jersey.client.JerseyClient;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.After;
 import org.junit.Before;
@@ -25,15 +23,16 @@ public class AuthIntegrationTest {
             CONFIG_PATH
     );
 
-//    private static final String TARGET = "http://localhost:8080";
-    private static final String TARGET = "https://localhost:8443";
+//    private static final String TARGET = "http://localhost:8080"; // http
+    private static final String TARGET = "https://localhost:8443";  // https
     private static final String PATH = "/hello/secured";
     private Client client;
 
+    // for calling https
     private final static String TRUST_STORE_FILE_NAME = "dropbookmarks.keystore";
     private final static String TRUST_STORE_PASSWORD = "p@ssw0rd";
 
-    private static final HttpAuthenticationFeature FEATURE = HttpAuthenticationFeature.basic("user", "p@ssw0rd");
+    private static final HttpAuthenticationFeature AUTHENTICATION_FEATURE = HttpAuthenticationFeature.basic("user", "p@ssw0rd");
 
     @Before
     public void setUp(){
@@ -59,7 +58,7 @@ public class AuthIntegrationTest {
     @Test
     public void testHappyPath(){
         String exepcted = "HelloSecuredWorld!!";
-        client.register(FEATURE);
+        client.register(AUTHENTICATION_FEATURE);
         String response = client.target(TARGET).path(PATH).request(MediaType.TEXT_PLAIN).get(String.class);
         assert exepcted.equals(response);
     }
