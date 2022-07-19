@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.udemy.core.User;
+import io.dropwizard.hibernate.UnitOfWork;
 
 @Path("/hello")
 public class HelloResource {
@@ -20,6 +21,7 @@ public class HelloResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/secured")
+    @UnitOfWork
     public String getSecuredGreeting(@Auth User user){
         return "HelloSecuredWorld!!";
     }

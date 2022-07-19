@@ -1,6 +1,8 @@
 package com.udemy;
 
+import com.udemy.auth.DBAuthenticator;
 import com.udemy.auth.HelloAuthenticator;
+import com.udemy.core.Bookmark;
 import com.udemy.core.User;
 import com.udemy.db.UserDAO;
 import com.udemy.resources.HelloResource;
@@ -16,7 +18,7 @@ import io.dropwizard.setup.Environment;
 
 public class DropBookmarksApplication extends Application<DropBookmarksConfiguration> {
 
-    private final HibernateBundle<DropBookmarksConfiguration> hibernateBundle = new HibernateBundle<DropBookmarksConfiguration>(User.class) {
+    private final HibernateBundle<DropBookmarksConfiguration> hibernateBundle = new HibernateBundle<DropBookmarksConfiguration>(User.class, Bookmark.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(DropBookmarksConfiguration dropBookmarksConfiguration) {
             return dropBookmarksConfiguration.getDataSourceFactory();
@@ -53,7 +55,7 @@ public class DropBookmarksApplication extends Application<DropBookmarksConfigura
         environment.jersey().register(
                 AuthFactory.binder(
                         new BasicAuthFactory<>(
-                                new HelloAuthenticator(configuration.getPassword()),
+                                new DBAuthenticator(userDAO),
                                 "SECURITY REALM",
                                 User.class
                         )
