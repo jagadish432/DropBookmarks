@@ -1,10 +1,8 @@
 package com.udemy.db;
 
-import com.google.common.base.Optional;
+
+import com.udemy.core.Bookmark;
 import com.udemy.core.User;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
@@ -19,25 +17,25 @@ import org.hibernate.Transaction;
 import org.hibernate.context.internal.ManagedSessionContext;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.internal.SessionFactoryImpl;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
- * A unit test of class UserDAO.
+ * A unit test of class BookmarksDAO.
  *
  */
-public class UserDAOTest {
+public class BookmarksDAOTest {
 
-    private static final SessionFactory SESSION_FACTORY
-            = HibernateUtil.getSessionFactory();
+    private static final SessionFactory SESSION_FACTORY = HibernateUtil.getSessionFactory();
+
     private static Liquibase liquibase = null;
     private Session session;
     private Transaction tx;
-    private UserDAO dao;
+    private BookmarkDAO bookmarkDAO;
+    private UserDAO userDAO;
 
     @BeforeClass
     public static void setUpClass() throws LiquibaseException, SQLException {
@@ -47,12 +45,7 @@ public class UserDAOTest {
         Connection connection = provider.getConnection();
         Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
 
-        liquibase
-                = new Liquibase(
-                "migrations.xml",
-                new ClassLoaderResourceAccessor(),
-                database);
-
+        liquibase = new Liquibase("migrations.xml", new ClassLoaderResourceAccessor(), database);
     }
 
     @AfterClass
@@ -62,9 +55,10 @@ public class UserDAOTest {
 
     @Before
     public void setUp() throws LiquibaseException {
-        liquibase.update("DEV");
+        liquibase.update("test");
         session = SESSION_FACTORY.openSession();
-        dao = new UserDAO(SESSION_FACTORY);
+        userDAO = new UserDAO(SESSION_FACTORY);
+        bookmarkDAO = new BookmarkDAO(SESSION_FACTORY);
         tx = null;
     }
 
@@ -74,44 +68,20 @@ public class UserDAOTest {
     }
 
     /**
-     * Test of findAll method, of class UserDAO.
+     * Test of findForUser method, of class UserDAO.
      */
     @Test
-    public void testFindAll() {
-        List<User> users = null;
+    public void testFindForUser() {
+        User user;
+        List<Bookmark> bookmarks = null;
         try {
             ManagedSessionContext.bind(session);
             tx = session.beginTransaction();
 
-            users = dao.findAll();
+            user = userDAO.findByUsernamePassword("udemy", "password").get();
 
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null && tx.isActive()) {
-                tx.rollback();
-            }
-            throw e;
-        } finally {
-            ManagedSessionContext.unbind(SESSION_FACTORY);
-            session.close();
-        }
+            bookmarks = bookmarkDAO.findForUser(user.getId());
 
-        Assert.assertNotNull(users);
-        Assert.assertFalse(users.isEmpty());
-        Assert.assertEquals(1, users.size());
-    }
-
-    @Test
-    public void testfindByUsernamePassword() {
-        String expectedUserName = "udemy";
-        String expectedPassword = "password";
-
-        Optional<User> user;
-        try{
-            ManagedSessionContext.bind(session);
-            tx = session.beginTransaction();
-
-            user = dao.findByUsernamePassword(expectedUserName, expectedPassword);
             tx.commit();
         } catch (Exception e) {
             if (tx != null && tx.isActive()) {
@@ -124,8 +94,7 @@ public class UserDAOTest {
         }
 
         Assert.assertNotNull(user);
-        Assert.assertTrue(user.isPresent());
-        Assert.assertEquals(expectedPassword, user.get().getPassword());
-        Assert.assertEquals(expectedUserName, user.get().getUsername());
+        Assert.assertNotNull(bookmarks);
+        Assert.assertEquals(user.getId(), bookmarks.get(0).getUser().getId());
     }
 }
