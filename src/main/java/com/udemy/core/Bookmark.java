@@ -7,6 +7,20 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "bookmarks")
+@NamedQueries({
+        @NamedQuery(
+                name = "com.udemy.core.Bookmark.findForUser",
+                query = "select b from Bookmark b " + "where b.user.id = :id "
+        ),
+        @NamedQuery(
+                name = "com.udemy.core.Bookmark.remove",
+                query = "delete from Bookmark b " + "where b.id = :id"
+        ),
+        @NamedQuery(
+                name = "com.udemy.core.Bookmark.removeBookmarksOfUser",
+                query = "delete from Bookmark b " + "where b.user.id = :user_id"
+        )
+})
 public class Bookmark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
