@@ -31,6 +31,7 @@ public class User {
     private String password;
 
     @ElementCollection
+    @OneToMany(mappedBy = "user")
     private List<Bookmark> bookmarks = new ArrayList<>();
 
 
