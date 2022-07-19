@@ -101,4 +101,32 @@ public class UserDAOTest {
         Assert.assertEquals(1, users.size());
 
     }
+
+    @Test
+    public void testfindByUsernamePassword() {
+        String expectedUserName = "udemy";
+        String expectedPassword = "password";
+
+        Optional<User> user;
+        try{
+            ManagedSessionContext.bind(session);
+            tx = session.beginTransaction();
+
+            user = dao.findByUsernamePassword(expectedUserName, expectedPassword);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        } finally {
+            ManagedSessionContext.unbind(SESSION_FACTORY);
+            session.close();
+        }
+
+        Assert.assertNotNull(user);
+        Assert.assertTrue(user.isPresent());
+        Assert.assertEquals(expectedPassword, user.get().getPassword());
+        Assert.assertEquals(expectedUserName, user.get().getUsername());
+    }
 }
