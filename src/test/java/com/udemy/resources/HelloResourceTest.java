@@ -10,6 +10,7 @@ import io.dropwizard.auth.basic.BasicCredentials;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.glassfish.jersey.test.grizzly.GrizzlyWebTestContainerFactory;
@@ -47,8 +48,8 @@ public class HelloResourceTest {
         assert expected.equals(actual);
     }
 
-    @Before
-    public void setUpClass(){
+    @BeforeClass
+    public static void setUpClass() {
         RULE.getJerseyTest().client().register(FEATURE);
     }
     @Test

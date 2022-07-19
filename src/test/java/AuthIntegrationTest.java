@@ -1,12 +1,11 @@
 import com.udemy.DropBookmarksApplication;
 import com.udemy.DropBookmarksConfiguration;
+import io.dropwizard.Application;
+import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.glassfish.jersey.SslConfigurator;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.*;
 
 import javax.net.ssl.SSLContext;
 import javax.ws.rs.client.Client;
@@ -15,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 public class AuthIntegrationTest {
-    private static final String CONFIG_PATH = "config.yml";
+    private static final String CONFIG_PATH = ResourceHelpers.resourceFilePath("test-config.yml");
 
     @ClassRule
     public static final DropwizardAppRule<DropBookmarksConfiguration> RULE = new DropwizardAppRule<>(
@@ -23,8 +22,8 @@ public class AuthIntegrationTest {
             CONFIG_PATH
     );
 
-//    private static final String TARGET = "http://localhost:8080"; // http
-    private static final String TARGET = "https://localhost:8443";  // https
+    private static final String TARGET = "http://localhost:8080"; // http
+//    private static final String TARGET = "https://localhost:8443";  // https
     private static final String PATH = "/hello/secured";
     private Client client;
 
@@ -32,8 +31,14 @@ public class AuthIntegrationTest {
     private final static String TRUST_STORE_FILE_NAME = "dropbookmarks.keystore";
     private final static String TRUST_STORE_PASSWORD = "p@ssw0rd";
 
-    private static final HttpAuthenticationFeature AUTHENTICATION_FEATURE = HttpAuthenticationFeature.basic("user", "p@ssw0rd");
+    private static final HttpAuthenticationFeature AUTHENTICATION_FEATURE = HttpAuthenticationFeature.basic("udemy", "password");
 
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+        Application<DropBookmarksConfiguration> application = RULE.getApplication();
+        application.run("db", "migrate", "-i DEV", CONFIG_PATH);
+
+    }
     @Before
     public void setUp(){
         SslConfigurator configurator = SslConfigurator.newInstance();
