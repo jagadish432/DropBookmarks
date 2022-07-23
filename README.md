@@ -1,3 +1,7 @@
+# This repo is created at the time I was following [this udemy course](https://www.udemy.com/course/getting-started-with-dropwizard) by [Dmitry Noranovich](https://www.udemy.com/user/dmitrynoranovich/)
+
+I'd gone through the course content and created this application along with the course flow. However, I've added this README.md file with all the requried commands which would help new learners to complete this application quickly and follow the course with less difficulties.
+
 # HTTPS
 
 ## Command to generate a keypair using JAVA sdk
